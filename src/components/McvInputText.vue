@@ -38,12 +38,12 @@
                   </td>
                   <td>
                     <label v-for="gend in genders" :key="gend.id">
-                      <input type="radio" :value="gend" v-model="gender" /><br>
+                      <input type="radio" :value="gend" v-model=" item.gender" /><br>
                       <span>{{ gend.name }}</span>
                     </label> 
                   </td>
                   <td>
-                    <select class="select " v-model="citizenship">
+                    <select class="select " v-model="item.citizenship">
                       <option v-for="c in citizenships" :value="c" v-bind:key="c.id">{{ c.name }} </option>
                     </select>
                   </td>
@@ -107,11 +107,30 @@ export default {
       telAgent: '', 
       telPass: '', 
       email: '' ,
+      
+      formModel: {
+         id: '', 
+         surname: '' ,
+         name: '' ,
+         birthday: '' ,     
+         passportSeries: '' ,
+         passportExpirationDate: '', 
+         gender: '',
+         citizenship: '',
+      }
     }  
   },
   methods: {
-    createElement (item){
-      this.items.push(item);
+    createElement (){
+      this.items.push({ ...this.formModel }),  
+      this.formModel.id = '' 
+      this.formModel.surname = ''
+      this.formModel.name = ''
+      this.formModel.birthday = ''     
+      this.formModel.passportSeries = ''
+      this.formModel.passportExpirationDate = '' 
+      this.formModel.gender = ''
+      this.formModel.citizenship = ''              
     },
   },
   mounted() {
