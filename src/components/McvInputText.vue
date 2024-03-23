@@ -65,7 +65,7 @@
         9M# {{ telPass }} <br>
         9П1E# {{ email }} <br>
       </h2>    
-      <div v-for="(item, index) in items" :key="item.id">        
+      <div v-for="(item) in items" :key="item.id">        
           <h2>          
            -{{ item.surname }} {{ item.name }} {{ item.birthday }}+{{ gender.code }}/{{ citizenship.code }}/{{ citizenship.pass }}{{ item.passportSeries }}/{{ item.passportExpirationDate }}        
           </h2>         
