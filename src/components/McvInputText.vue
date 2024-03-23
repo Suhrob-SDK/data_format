@@ -1,32 +1,32 @@
 <template>
   <div class="app">
-    <div class="data">  
-      <center>     
+    <div class="data">
+      <center>
         <table border="0">
-          <tr>            
+          <tr>
             <td>
-              <input class="input" type="text" v-model="telAgent" placeholder="Тел Агентство">
+              <input class="input" type="text" v-model="formModel.telAgent" placeholder="Тел Агентство">
             </td>
             <td>
-              <input class="input" type="text" v-model="telPass" placeholder="Тел Пассажира">
+              <input class="input" type="text" v-model="formModel.telPass" placeholder="Тел Пассажира">
             </td>
             <td>
-              <input class="input" type="text" v-model="email" placeholder="Эл.почта">
-            </td> 
+              <input class="input" type="text" v-model="formModel.email" placeholder="Эл.почта">
+            </td>
             <td>
               <my-button @click="createElement">
                 Добавить
-              </my-button>                
-            </td>           
+              </my-button>
+            </td>
           </tr>
-        </table>               
-          <table border="0">  
-            <tbody>    
-              <div v-for="(item, index) in items" :key="item.id">         
-                <tr> 
+        </table>
+          <table border="0">
+            <tbody>
+              <div v-for="(item, index) in items" :key="item.id">
+                <tr>
                   <td>
                     {{ index+1 }}
-                  </td>                 
+                  </td>
                   <td>
                     <input class="input " type="text" v-model="item.surname" placeholder="Фамилия">
                   </td>
@@ -37,10 +37,10 @@
                     <input class="input " type="text" v-model="item.birthday" placeholder="Дата рождение">
                   </td>
                   <td>
-                    <label v-for="gend in genders" :key="gend.id">
-                      <input type="radio" :value="gend" v-model=" item.gender" /><br>
+                    <label class="gender-radio" v-for="gend in genders" :key="gend.id">
+                      <input type="radio" :value="gend" v-model="item.gender" /><br>
                       <span>{{ gend.name }}</span>
-                    </label> 
+                    </label>
                   </td>
                   <td>
                     <select class="select " v-model="item.citizenship">
@@ -52,11 +52,11 @@
                   </td>
                   <td>
                     <input class="input " type="text" v-model="item.passportExpirationDate" placeholder="Срок пасспорт">
-                  </td>              
+                  </td>
                 </tr>
               </div>
             </tbody>
-          </table>        
+          </table>
       </center>
     </div>
     <div class="data" >
@@ -65,18 +65,20 @@
         9M# {{ telPass }} <br>
         9П1E# {{ email }} <br>
       </h2>    
-      <div v-for="(item) in items" :key="item.id">        
-          <h2>          
-           -{{ item.surname }} {{ item.name }} {{ item.birthday }}+{{ gender.code }}/{{ citizenship.code }}/{{ citizenship.pass }}{{ item.passportSeries }}/{{ item.passportExpirationDate }}        
-          </h2>         
+      <div v-for="(item) in items" :key="item.id">          
+          <h2>
+           -{{ item.surname }} {{ item.name }} {{ item.birthday }}+{{ item.gender?.code || '' }}/{{ item.citizenship?.code || '' }}/{{ item.citizenship?.pass || '' }}{{ item.passportSeries }}/{{ item.passportExpirationDate }}
+          </h2>
       </div>
     </div>
   </div>
 </template>
-
+ 
 <script>
 import MyButton from '@/components/MyButton.vue';
-
+ 
+const createRandomId = () => String(Math.floor(Math.random() * 10000))
+ 
 export default {
 	components: { MyButton },
   data (){
@@ -86,52 +88,59 @@ export default {
         {id: 3, code: "UZ", name: "Узбекистан", pass: "УЗНП"},
     ];
     const genders = [
-        {id: 1, name: 'Мужчина', code: "М" }, 
+        {id: 1, name: 'Мужчина', code: "М" },
         {id: 2, name: 'Женшина', code: "Ж" }
     ];
     return {
       items: [
-        { 
-         id: '', 
-         surname: '' ,
-         name: '' ,
-         birthday: '' ,     
-         passportSeries: '' ,
-         passportExpirationDate: '',            
-        },  
+        {
+          id: createRandomId(),
+          telAgent: '',
+          telPass: '',
+          email: '' ,
+          surname: '' ,
+          name: '' ,
+          birthday: '' ,
+          passportSeries: '' ,
+          passportExpirationDate: '',
+          gender: genders[0],
+          citizenship: citizenships[0],
+        },
       ],
       citizenships,
-      citizenship: citizenships[0] ,         
       genders ,
-      gender: genders[0], 
-      telAgent: '', 
-      telPass: '', 
-      email: '' ,
-      
       formModel: {
-         id: '', 
-         surname: '' ,
-         name: '' ,
-         birthday: '' ,     
-         passportSeries: '' ,
-         passportExpirationDate: '', 
-         gender: '',
-         citizenship: '',
+        telAgent: '',
+        telPass: '',
+        email: '' ,
+        surname: '' ,
+        name: '' ,
+        birthday: '' ,
+        passportSeries: '' ,
+        passportExpirationDate: '',
+        gender: null,
+        citizenship: null,
       }
-    }  
+    }
   },
   methods: {
     createElement (){
-      this.items.push({ ...this.formModel }),  
-      this.formModel.id = '' 
+      this.items.push({ ...this.formModel, id: createRandomId() })
+      this.resetForm()
+    },
+    resetForm() {
+      this.formModel.id = ''
+      this.formModel.telAgent = ''
+      this.formModel.telPass = ''
+      this.formModel.email = ''
       this.formModel.surname = ''
       this.formModel.name = ''
-      this.formModel.birthday = ''     
+      this.formModel.birthday = ''
       this.formModel.passportSeries = ''
-      this.formModel.passportExpirationDate = '' 
-      this.formModel.gender = ''
-      this.formModel.citizenship = ''              
-    },
+      this.formModel.passportExpirationDate = ''
+      this.formModel.gender = null
+      this.formModel.citizenship = null
+    }
   },
   mounted() {
     if(localStorage.telAgent) this.telAgent = localStorage.telAgent;
@@ -148,43 +157,47 @@ export default {
     email(newName) {
       localStorage.email = newName;
     },
-  },  
-  
+  },
+ 
 }
 </script>
-
+ 
 <style>
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
+ 
 .app {
   padding: 5px;
 }
-
+ 
 .data {
   padding: 5px;
   border: 2px solid teal;
   margin-top: 10px;
 }
-
+ 
 .input {
   width: 100%;
   border: 1px solid teal;
-  padding: 10px 5px;   
+  padding: 10px 5px;
   font-size:25px;
 }
-
-.select {  
+ 
+.select {
   border: 1px solid teal;
-  padding: 10px 15px;  
-  font-size:25px;  
+  padding: 10px 15px;
+  font-size:25px;
 }
-
+ 
 th, td {
   padding: 5px;
 }
-
+ 
+.gender-radio {
+  display: flex;
+  gap: 0.25em;
+}
 </style>
