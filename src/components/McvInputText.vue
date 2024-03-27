@@ -61,9 +61,9 @@
     </div>
     <div class="data" >
       <h2>
-        9А# {{ telAgent }} <br>
-        9M# {{ telPass }} <br>
-        9П1E# {{ email }} <br>
+        9А# {{ formModel.telAgent }} <br>
+        9M# {{ formModel.telPass }} <br>
+        9П1E# {{ formModel.email }} <br>
       </h2>    
       <div v-for="(item) in items" :key="item.id">          
           <h2>
