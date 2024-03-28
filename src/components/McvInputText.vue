@@ -95,9 +95,7 @@ export default {
       items: [
         {
           id: createRandomId(),
-          telAgent: '',
-          telPass: '',
-          email: '' ,
+
           surname: '' ,
           name: '' ,
           birthday: '' ,
@@ -110,9 +108,7 @@ export default {
       citizenships,
       genders ,
       formModel: {
-        telAgent: '',
-        telPass: '',
-        email: '' ,
+
         surname: '' ,
         name: '' ,
         birthday: '' ,
@@ -130,9 +126,7 @@ export default {
     },
     resetForm() {
       this.formModel.id = ''
-      this.formModel.telAgent = ''
-      this.formModel.telPass = ''
-      this.formModel.email = ''
+
       this.formModel.surname = ''
       this.formModel.name = ''
       this.formModel.birthday = ''
@@ -143,21 +137,20 @@ export default {
     }
   },
   mounted() {
-    if(localStorage.telAgent) this.telAgent = localStorage.telAgent;
-    if(localStorage.telPass) this.telPass = localStorage.telPass;
-    if(localStorage.email) this.email = localStorage.email;
+    if(localStorage.telAgent) this.formModel.telAgent = localStorage.telAgent;
+    if(localStorage.telPass) this.formModel.telPass = localStorage.telPass;
+    if(localStorage.email) this.formModel.email = localStorage.email;
   },
   watch: {
-    telAgent(newName) {
-      localStorage.telAgent = newName;
-    },
-    telPass(newName) {
-      localStorage.telPass = newName;
-    },
-    email(newName) {
-      localStorage.email = newName;
-    },
-  },
+    formModel: {
+      deep: true,
+      handler(newValue) {
+        localStorage.telAgent = newValue.telAgent;
+        localStorage.telPass = newValue.telPass;
+        localStorage.email = newValue.email;
+      }
+    }
+}
  
 }
 </script>
